@@ -3,17 +3,21 @@ package com.qiscus.mychatui.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.qiscus.mychatui.R;
+import com.qiscus.mychatui.presenter.ChatRoomPresenter;
 import com.qiscus.mychatui.ui.fragment.ChatRoomFragment;
 import com.qiscus.nirmana.Nirmana;
 import com.qiscus.sdk.chat.core.QiscusCore;
@@ -35,14 +39,16 @@ import rx.Observable;
  * Name       : Zetra
  * GitHub     : https://github.com/zetbaitsu
  */
-public class ChatRoomActivity extends AppCompatActivity implements ChatRoomFragment.UserTypingListener, ChatRoomFragment.CommentSelectedListener {
+public class ChatRoomActivity extends AppCompatActivity implements ChatRoomFragment.UserTypingListener, ChatRoomFragment.CommentSelectedListener, ChatRoomPresenter.View {
     private static final String CHAT_ROOM_KEY = "extra_chat_room";
 
     private TextView tvSubtitle, tvTitle;
     private QiscusChatRoom chatRoom;
     private String opponentEmail;
+    private Button btnCall;
     private ImageButton btn_action_copy, btn_action_delete, btn_action_reply, btn_action_reply_cancel;
     private LinearLayout toolbar_selected_comment;
+    private ChatRoomPresenter chatPresenter;
     public static Intent generateIntent(Context context, QiscusChatRoom chatRoom) {
         Intent intent = new Intent(context, ChatRoomActivity.class);
         intent.putExtra(CHAT_ROOM_KEY, chatRoom);
@@ -55,6 +61,7 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomFragm
         setContentView(R.layout.activity_chat_room);
 
         chatRoom = getIntent().getParcelableExtra(CHAT_ROOM_KEY);
+        chatPresenter = new ChatRoomPresenter(this, chatRoom);
         if (chatRoom == null) {
             finish();
             return;
@@ -64,6 +71,7 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomFragm
         ImageButton btBack = findViewById(R.id.btn_back);
         tvSubtitle = findViewById(R.id.subtitle);
         tvTitle = findViewById(R.id.tvTitle);
+        btnCall = findViewById(R.id.btn_call);
         btn_action_copy = findViewById(R.id.btn_action_copy);
         btn_action_delete = findViewById(R.id.btn_action_delete);
         btn_action_reply = findViewById(R.id.btn_action_reply);
@@ -96,11 +104,18 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomFragm
                 onBackPressed();
             }
         });
+        btnCall.setOnClickListener(v -> {
+            startMeet(false);
+        });
 
         btn_action_copy.setOnClickListener(view -> getChatFragment().copyComment());
         btn_action_delete.setOnClickListener(view -> getChatFragment().deleteComment());
         btn_action_reply.setOnClickListener(view -> getChatFragment().replyComment());
         btn_action_reply_cancel.setOnClickListener(view -> getChatFragment().clearSelectedComment());
+    }
+
+    private void startMeet(boolean isVideo) {
+        chatPresenter.initiateCall(isVideo);
     }
 
     private void getOpponentIfNotGroupEmail() {
@@ -153,6 +168,76 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomFragm
         String last = QiscusDateUtil.getRelativeTimeDiff(event.getLastActive());
         tvSubtitle.setText(event.isOnline() ? "Online" : "Last seen " + last);
         tvSubtitle.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void dismissLoading() {
+        Log.e(ChatRoomActivity.class.getName(), "dismissLoading() called");
+    }
+
+    @Override
+    public void showLoading() {
+        Log.e(ChatRoomActivity.class.getName(), "showLoading() called");
+    }
+
+    @Override
+    public void showError(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onRoomChanged(QiscusChatRoom qiscusChatRoom) {
+        Log.e(ChatRoomActivity.class.getName(), "onRoomChanged() called with: qiscusChatRoom = [" + qiscusChatRoom + "]");
+    }
+
+    @Override
+    public void onSendingComment(QiscusComment qiscusComment) {
+        Log.e(ChatRoomActivity.class.getName(), "onSendingComment() called with: qiscusComment = [" + qiscusComment + "]");
+    }
+
+    @Override
+    public void onSuccessSendComment(QiscusComment qiscusComment) {
+        Log.e(ChatRoomActivity.class.getName(), "onSuccessSendComment() called with: qiscusComment = [" + qiscusComment + "]");
+    }
+
+    @Override
+    public void onFailedSendComment(QiscusComment qiscusComment) {
+        Log.e(ChatRoomActivity.class.getName(), "onFailedSendComment() called with: qiscusComment = [" + qiscusComment + "]");
+    }
+
+    @Override
+    public void onNewComment(QiscusComment qiscusComment) {
+        Log.e(ChatRoomActivity.class.getName(), "onNewComment() called with: qiscusComment = [" + qiscusComment + "]");
+    }
+
+    @Override
+    public void onCommentDeleted(QiscusComment qiscusComment) {
+        Log.e(ChatRoomActivity.class.getName(), "onCommentDeleted() called with: qiscusComment = [" + qiscusComment + "]");
+    }
+
+    @Override
+    public void refreshComment(QiscusComment qiscusComment) {
+        Log.e(ChatRoomActivity.class.getName(), "refreshComment() called with: qiscusComment = [" + qiscusComment + "]");
+    }
+
+    @Override
+    public void updateLastDeliveredComment(long lastDeliveredCommentId) {
+        Log.e(ChatRoomActivity.class.getName(), "updateLastDeliveredComment() called with: lastDeliveredCommentId = [" + lastDeliveredCommentId + "]");
+    }
+
+    @Override
+    public void updateLastReadComment(long lastReadCommentId) {
+        Log.e(ChatRoomActivity.class.getName(), "updateLastReadComment() called with: lastReadCommentId = [" + lastReadCommentId + "]");
+    }
+
+    @Override
+    public void onRealtimeStatusChanged(boolean connected) {
+        Log.d(ChatRoomActivity.class.getName(), "onRealtimeStatusChanged() called with: connected = [" + connected + "]");
+    }
+
+    @Override
+    public void clearCommentsBefore(long timestamp) {
+        Log.d(ChatRoomActivity.class.getName(), "clearCommentsBefore() called with: timestamp = [" + timestamp + "]");
     }
 
     @Override
