@@ -39,7 +39,6 @@ public class QiscusMeetUtil {
             JSONObject payload = new JSONObject(comment.getExtraPayload());
             JSONObject content = payload.getJSONObject("content");
             String type = payload.getString("type");
-            boolean isVideo = content.getBoolean("isVideo");
 
             if (CallType.CALL.equals(type)) {
                 MeetJwtConfig jwtConfig = new MeetJwtConfig();
@@ -54,13 +53,14 @@ public class QiscusMeetUtil {
                         .setEnableRoomName(true);
 
                 QiscusMeet.call()
-                        .setTypeCall(isVideo ? QiscusMeet.Type.VIDEO : QiscusMeet.Type.VOICE)
+                        .setTypeCall(QiscusMeet.Type.VOICE)
                         .setRoomId(comment.getUniqueId())
                         .setMuted(true)
                         .setDisplayName(!comment.isMyComment() ? QiscusCore.getQiscusAccount().getUsername() : comment.getSender())
                         .setAvatar(!comment.isMyComment() ? QiscusCore.getQiscusAccount().getAvatar() : comment.getSenderAvatar())
                         .build(context);
             }
+            else Log.e(TAG, "startCall: type " + type + " is not "+ CallType.CALL);
         } catch (JSONException e) {
             Log.e(QiscusMeetUtil.class.getName(), "onReceiveComment: ", e);
         }
