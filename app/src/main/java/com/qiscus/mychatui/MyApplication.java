@@ -1,6 +1,7 @@
 package com.qiscus.mychatui;
 
 
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.multidex.MultiDexApplication;
@@ -10,6 +11,7 @@ import com.qiscus.meet.MeetParticipantJoinedEvent;
 import com.qiscus.meet.MeetParticipantLeftEvent;
 import com.qiscus.meet.MeetTerminatedConfEvent;
 import com.qiscus.meet.QiscusMeet;
+import com.qiscus.mychatui.ui.HomeActivity;
 import com.qiscus.mychatui.util.PushNotificationUtil;
 import com.qiscus.mychatui.util.QiscusMeetUtil;
 import com.qiscus.nirmana.Nirmana;
@@ -66,7 +68,7 @@ public class MyApplication extends MultiDexApplication {
 
     @Subscribe
     public void onReceiveComment(QiscusCommentReceivedEvent event) {
-        Log.e(getPackageName(), "onReceiveComment() called with: event = [" + event.getQiscusComment() + "]");
+        Log.e(getClass().getName(), "onReceiveComment() called with: event = [" + event.getQiscusComment() + "]");
         QiscusMeetUtil.handleReceivedMessageUtil(this, event);
     }
 
@@ -82,6 +84,6 @@ public class MyApplication extends MultiDexApplication {
 
     @Subscribe
     public void onParticipantJoined(MeetParticipantJoinedEvent event) {
-        Log.e(MyApplication.class.getName(), event.getData().toString());
+        Log.e(getClass().getName(), "onParticipantJoined: "+ event.getData().toString());
     }
 }
