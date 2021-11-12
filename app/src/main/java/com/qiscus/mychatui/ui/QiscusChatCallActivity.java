@@ -3,21 +3,27 @@ package com.qiscus.mychatui.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.qiscus.meet.QiscusMeet;
 import com.qiscus.mychatui.databinding.ActivityQiscusChatCallBinding;
+import com.qiscus.mychatui.presenter.ChatRoomPresenter;
 import com.qiscus.mychatui.util.QiscusMeetUtil;
 import com.qiscus.sdk.chat.core.QiscusCore;
+import com.qiscus.sdk.chat.core.data.model.QiscusChatRoom;
 import com.qiscus.sdk.chat.core.data.model.QiscusComment;
 
-public class QiscusChatCallActivity extends AppCompatActivity {
+public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoomPresenter.View {
 
     private static final String CHAT_COMMENT = "extra_chat_comment";
     private QiscusComment comment;
+    private QiscusChatRoom chatRoom;
+    private ChatRoomPresenter chatRoomPresenter;
 
     public static Intent generateIntent(Context context, QiscusComment comment, String action) {
         Intent intent = new Intent(context, QiscusChatCallActivity.class);
@@ -58,18 +64,16 @@ public class QiscusChatCallActivity extends AppCompatActivity {
 
     private void handleAction() {
         binding.btnAcceptCall.setOnClickListener(v -> {
-            QiscusMeetUtil.accept(false, comment);
+            chatRoomPresenter.answerCall(false, comment);
         });
 
         binding.btnRejectCall.setOnClickListener(v -> {
-            // TODO: 04/11/2021 send reject call status
-            QiscusMeetUtil.reject(false, comment);
+            chatRoomPresenter.rejectCall(false, comment);
             finish();
         });
 
         binding.btnHangUp.setOnClickListener(v->{
-            // TODO: 04/11/2021 send cancel call status
-            QiscusMeetUtil.endCall(false, comment);
+            chatRoomPresenter.endCall(false, comment);
             finish();
         });
     }
@@ -81,6 +85,10 @@ public class QiscusChatCallActivity extends AppCompatActivity {
         }
 
         comment = intent.getParcelableExtra(CHAT_COMMENT);
+        chatRoom = QiscusCore.getDataStore().getChatRoom(comment.getRoomId());
+
+        chatRoomPresenter = new ChatRoomPresenter(this, chatRoom);
+
         switch (intent.getAction()){
             case QiscusMeetUtil.CallType.CALL_ACCEPTED:
                 QiscusMeetUtil.startCall(this, comment);
@@ -91,5 +99,80 @@ public class QiscusChatCallActivity extends AppCompatActivity {
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void dismissLoading() {
+        Log.e(getClass().getName(), "dismissLoading() called");
+    }
+
+    @Override
+    public void showLoading() {
+        Log.e(getClass().getName(), "showLoading() called");
+    }
+
+    @Override
+    public void showError(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onRoomChanged(QiscusChatRoom qiscusChatRoom) {
+        Log.e(getClass().getName(), "onRoomChanged() called with: qiscusChatRoom = [" + qiscusChatRoom + "]");
+    }
+
+    @Override
+    public void onSendingComment(QiscusComment qiscusComment) {
+        Log.e(getClass().getName(), "onSendingComment() called with: qiscusComment = [" + qiscusComment + "]");
+    }
+
+    @Override
+    public void onSuccessSendComment(QiscusComment qiscusComment) {
+        Log.e(getClass().getName(), "onSuccessSendComment() called with: qiscusComment = [" + qiscusComment + "]");
+    }
+
+    @Override
+    public void onFailedSendComment(QiscusComment qiscusComment) {
+        Log.e(getClass().getName(), "onFailedSendComment() called with: qiscusComment = [" + qiscusComment + "]");
+    }
+
+    @Override
+    public void onNewComment(QiscusComment qiscusComment) {
+        Log.e(getClass().getName(), "onNewComment() called with: qiscusComment = [" + qiscusComment + "]");
+    }
+
+    @Override
+    public void onCommentDeleted(QiscusComment qiscusComment) {
+        Log.e(getClass().getName(), "onCommentDeleted() called with: qiscusComment = [" + qiscusComment + "]");
+    }
+
+    @Override
+    public void refreshComment(QiscusComment qiscusComment) {
+        Log.e(getClass().getName(), "refreshComment() called with: qiscusComment = [" + qiscusComment + "]");
+    }
+
+    @Override
+    public void updateLastDeliveredComment(long lastDeliveredCommentId) {
+        Log.e(getClass().getName(), "updateLastDeliveredComment() called with: lastDeliveredCommentId = [" + lastDeliveredCommentId + "]");
+    }
+
+    @Override
+    public void updateLastReadComment(long lastReadCommentId) {
+        Log.e(getClass().getName(), "updateLastReadComment() called with: lastReadCommentId = [" + lastReadCommentId + "]");
+    }
+
+    @Override
+    public void onRealtimeStatusChanged(boolean connected) {
+        Log.e(getClass().getName(), "onRealtimeStatusChanged() called with: connected = [" + connected + "]");
+    }
+
+    @Override
+    public void clearCommentsBefore(long timestamp) {
+        Log.e(getClass().getName(), "clearCommentsBefore() called with: timestamp = [" + timestamp + "]");
+    }
+
+    @Override
+    public void onUserTyping(String user, boolean typing) {
+        Log.e(getClass().getName(), "onUserTyping() called with: user = [" + user + "], typing = [" + typing + "]");
     }
 }
