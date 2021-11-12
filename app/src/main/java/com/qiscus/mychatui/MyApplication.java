@@ -74,7 +74,10 @@ public class MyApplication extends MultiDexApplication {
 
     @Subscribe
     public void onTerminatedConf(MeetTerminatedConfEvent event) {
-        Log.e(MyApplication.class.getName(), event.getData().toString());
+        Log.e(getClass().getName(), "onTerminatedConf: " + event.getData().toString());
+        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     @Subscribe
