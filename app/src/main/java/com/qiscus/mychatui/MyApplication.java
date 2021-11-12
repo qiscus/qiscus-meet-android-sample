@@ -79,7 +79,8 @@ public class MyApplication extends MultiDexApplication {
 
     @Subscribe
     public void onParticipantLeft(MeetParticipantLeftEvent event) {
-        Log.e(MyApplication.class.getName(), event.getData().toString());
+        Log.e(getClass().getName(), "onParticipantLeft: "+ event.getData().toString());
+        QiscusMeet.endCall();
     }
 
     @Subscribe
