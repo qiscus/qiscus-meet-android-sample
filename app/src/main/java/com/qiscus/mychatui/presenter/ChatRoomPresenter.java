@@ -140,7 +140,29 @@ public class ChatRoomPresenter extends QiscusPresenter<ChatRoomPresenter.View> i
         Map<String, Object> map = new HashMap<>();
         map.put("isVideo", isVideo);
         map.put(QiscusMeetUtil.CallType.CALL_ACTION, QiscusMeetUtil.CallType.CALLING);
-        QiscusComment qiscusComment = QiscusComment.generateCustomMessage(room.getId(), "Calling", QiscusComment.Type.SYSTEM_EVENT.name(), new JSONObject(map));
+        QiscusComment qiscusComment = QiscusComment.generateCustomMessage(room.getId(), "Calling", QiscusMeetUtil.CallType.CALL, new JSONObject(map));
+        sendComment(qiscusComment);
+    }
+
+    public void answerCall(boolean isVideo, QiscusComment comment) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(QiscusMeetUtil.CallType.CALL_ACTION, QiscusMeetUtil.CallType.CALL_ACCEPTED);
+        QiscusComment qiscusComment = QiscusComment.generateCustomMessage(comment.getRoomId(), "Call Accepted", QiscusMeetUtil.CallType.CALL, new JSONObject(map));
+        sendComment(qiscusComment);
+    }
+
+    public void rejectCall(boolean isVideo, QiscusComment comment) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(QiscusMeetUtil.CallType.CALL_ACTION, QiscusMeetUtil.CallType.CALL_ENDED);
+        QiscusComment qiscusComment = QiscusComment.generateCustomMessage(comment.getRoomId(), "Call Rejected", QiscusMeetUtil.CallType.CALL, new JSONObject(map));
+        sendComment(qiscusComment);
+    }
+
+    public void endCall(boolean isVideo, QiscusComment comment) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("isVideo", isVideo);
+        map.put(QiscusMeetUtil.CallType.CALL_ACTION, QiscusMeetUtil.CallType.CALL_ENDED);
+        QiscusComment qiscusComment = QiscusComment.generateCustomMessage(comment.getRoomId(), "Call Canceled", QiscusMeetUtil.CallType.CALL, new JSONObject(map));
         sendComment(qiscusComment);
     }
 
