@@ -138,23 +138,43 @@ public class ChatRoomPresenter extends QiscusPresenter<ChatRoomPresenter.View> i
 
     public void initiateCall(boolean isVideo) {
         Map<String, Object> map = new HashMap<>();
-        map.put("isVideo", isVideo);
-        map.put(QiscusMeetUtil.CallType.CALL_ACTION, QiscusMeetUtil.CallType.CALLING);
         QiscusComment qiscusComment = QiscusComment.generateCustomMessage(room.getId(), "Calling", QiscusMeetUtil.CallType.CALL, new JSONObject(map));
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(QiscusMeetUtil.CallType.CALL_ACTION, QiscusMeetUtil.CallType.CALLING);
+        } catch (JSONException e) {
+            Log.e("ChatRoomPresenter", "Json Object error", e);
+            e.printStackTrace();
+        }
+        qiscusComment.setExtras(jsonObject);
         sendComment(qiscusComment);
     }
 
     public void answerCall(boolean isVideo, QiscusComment comment) {
         Map<String, Object> map = new HashMap<>();
-        map.put(QiscusMeetUtil.CallType.CALL_ACTION, QiscusMeetUtil.CallType.CALL_ACCEPTED);
         QiscusComment qiscusComment = QiscusComment.generateCustomMessage(comment.getRoomId(), "Call Accepted", QiscusMeetUtil.CallType.CALL, new JSONObject(map));
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(QiscusMeetUtil.CallType.CALL_ACTION, QiscusMeetUtil.CallType.CALL_ACCEPTED);
+        } catch (JSONException e) {
+            Log.e("ChatRoomPresenter", "Json Object error", e);
+            e.printStackTrace();
+        }
+        qiscusComment.setExtras(jsonObject);
         sendComment(qiscusComment);
     }
 
     public void rejectCall(boolean isVideo, QiscusComment comment) {
         Map<String, Object> map = new HashMap<>();
-        map.put(QiscusMeetUtil.CallType.CALL_ACTION, QiscusMeetUtil.CallType.CALL_ENDED);
         QiscusComment qiscusComment = QiscusComment.generateCustomMessage(comment.getRoomId(), "Call Rejected", QiscusMeetUtil.CallType.CALL, new JSONObject(map));
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(QiscusMeetUtil.CallType.CALL_ACTION, QiscusMeetUtil.CallType.CALL_ENDED);
+        } catch (JSONException e) {
+            Log.e("ChatRoomPresenter", "Json Object error", e);
+            e.printStackTrace();
+        }
+        qiscusComment.setExtras(jsonObject);
         sendComment(qiscusComment);
     }
 
