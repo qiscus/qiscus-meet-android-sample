@@ -20,9 +20,8 @@ public class QiscusMeetUtil {
 
     public static void handleReceivedMessageUtil(Context context, QiscusCommentReceivedEvent event) {
         try {
-            JSONObject payload = new JSONObject(event.getQiscusComment().getExtraPayload());
-            JSONObject content = payload.getJSONObject("content");
-            String callAction = content.getString(CallType.CALL_ACTION);
+            JSONObject extras = event.getQiscusComment().getExtras();
+            String callAction = extras.getString(CallType.CALL_ACTION);
 
             launchCallingScreen(context, event.getQiscusComment(), callAction);
         } catch (JSONException e) {
