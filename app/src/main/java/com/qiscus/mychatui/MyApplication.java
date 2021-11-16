@@ -1,7 +1,5 @@
 package com.qiscus.mychatui;
 
-
-import android.content.Intent;
 import android.util.Log;
 
 import androidx.multidex.MultiDexApplication;
@@ -11,7 +9,6 @@ import com.qiscus.meet.MeetParticipantJoinedEvent;
 import com.qiscus.meet.MeetParticipantLeftEvent;
 import com.qiscus.meet.MeetTerminatedConfEvent;
 import com.qiscus.meet.QiscusMeet;
-import com.qiscus.mychatui.ui.HomeActivity;
 import com.qiscus.mychatui.util.PushNotificationUtil;
 import com.qiscus.mychatui.util.QiscusMeetUtil;
 import com.qiscus.nirmana.Nirmana;
@@ -74,20 +71,17 @@ public class MyApplication extends MultiDexApplication {
 
     @Subscribe
     public void onTerminatedConf(MeetTerminatedConfEvent event) {
-        Log.e(getClass().getName(), "onTerminatedConf: " + event.getData().toString());
-        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        Log.e(getClass().getName(), "onTerminatedConf: " + event.getData());
     }
 
     @Subscribe
     public void onParticipantLeft(MeetParticipantLeftEvent event) {
-        Log.e(getClass().getName(), "onParticipantLeft: "+ event.getData().toString());
+        Log.e(getClass().getName(), "onParticipantLeft: "+ event.getData());
         QiscusMeet.endCall();
     }
 
     @Subscribe
     public void onParticipantJoined(MeetParticipantJoinedEvent event) {
-        Log.e(getClass().getName(), "onParticipantJoined: "+ event.getData().toString());
+        Log.e(getClass().getName(), "onParticipantJoined: "+ event.getData());
     }
 }
