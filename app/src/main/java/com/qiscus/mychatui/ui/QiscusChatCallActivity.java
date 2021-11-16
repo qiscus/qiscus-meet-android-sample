@@ -28,7 +28,7 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
     public static Intent generateIntent(Context context, QiscusComment comment, String action) {
         Intent intent = new Intent(context, QiscusChatCallActivity.class);
         intent.setAction(action);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
         intent.putExtra(CHAT_COMMENT, comment);
         return intent;
     }
