@@ -54,7 +54,7 @@ public class QiscusMeetUtil {
                 QiscusMeet.call()
                         .setTypeCall(QiscusMeet.Type.VOICE)
                         .setRoomId(comment.getUniqueId())
-                        .setMuted(true)
+                        .setMuted(false)
                         .setDisplayName(!comment.isMyComment() ? QiscusCore.getQiscusAccount().getUsername() : comment.getSender())
                         .setAvatar(!comment.isMyComment() ? QiscusCore.getQiscusAccount().getAvatar() : comment.getSenderAvatar())
                         .build(context);
