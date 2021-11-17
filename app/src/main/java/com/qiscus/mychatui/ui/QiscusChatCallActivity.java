@@ -45,14 +45,21 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
         handleAction();
 
         Glide.with(getApplicationContext())
-                .load(comment.isMyComment() ? comment.getSenderAvatar() : comment.getRoomAvatar())
+                .load(!comment.isMyComment() ? comment.getSenderAvatar() : chatRoom.getAvatarUrl())
                 .into(binding.ivOutgoingPicture);
 
-        binding.tvIncomingMessage.setText(comment.getSender()+" is Calling");
-        binding.tvOutgoingMessage.setText(QiscusCore.getQiscusAccount().getUsername() +" is Calling");
-        if (comment.isMyComment()) binding.containerIncomingCall.setVisibility(View.GONE);
-        if (!comment.isMyComment()) binding.tvOutgoingMessage.setVisibility(View.GONE);
-        if (!comment.isMyComment()) binding.btnHangUp.setVisibility(View.GONE);
+        String callMessage = "Calling "+chatRoom.getName();
+        if (!comment.isMyComment()) {
+            callMessage = comment.getSender()+" is Calling";
+        }
+        binding.tvIncomingMessage.setText(callMessage);
+        setIncomingCall(comment.isMyComment());
+    }
+
+    public void setIncomingCall(boolean isMyComment){
+        binding.btnHangUp.setVisibility(isMyComment ? View.VISIBLE : View.INVISIBLE);
+        binding.btnAcceptCall.setVisibility(isMyComment ? View.GONE : View.VISIBLE);
+        binding.btnRejectCall.setVisibility(isMyComment ? View.GONE : View.VISIBLE);
     }
 
     @Override
