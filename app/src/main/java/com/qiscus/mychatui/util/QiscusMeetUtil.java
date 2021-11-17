@@ -46,10 +46,10 @@ public class QiscusMeetUtil {
 
                 QiscusMeet.config().setJwtConfig(jwtConfig)
                         .setAutoRecording(false)
-                        .setScreenSharing(true)
+                        .setScreenSharing(false)
                         .setOverflowMenu(true)
-                        .setChat(true)
-                        .setEnableRoomName(true);
+                        .setChat(false)
+                        .setEnableRoomName(false);
 
                 QiscusMeet.call()
                         .setTypeCall(QiscusMeet.Type.VOICE)
