@@ -45,7 +45,7 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomFragm
     private TextView tvSubtitle, tvTitle;
     private QiscusChatRoom chatRoom;
     private String opponentEmail;
-    private Button btnCall;
+    private ImageButton btnCall;
     private ImageButton btn_action_copy, btn_action_delete, btn_action_reply, btn_action_reply_cancel;
     private LinearLayout toolbar_selected_comment;
     private ChatRoomPresenter chatPresenter;
