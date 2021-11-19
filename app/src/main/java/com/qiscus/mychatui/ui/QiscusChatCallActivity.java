@@ -96,6 +96,17 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
         chatRoom = QiscusCore.getDataStore().getChatRoom(comment.getRoomId());
 
         chatRoomPresenter = new ChatRoomPresenter(this, chatRoom);
+
+        switch (intent.getAction()){
+            case QiscusMeetUtil.CallType.CALL_ACCEPTED:
+                finish();
+                QiscusMeetUtil.startCall(this, comment);
+                break;
+            case QiscusMeetUtil.CallType.CALL_ENDED:
+                finish();
+                QiscusMeet.endCall();
+                break;
+        }
     }
 
     @Override
