@@ -58,6 +58,7 @@ public class QiscusMeetUtil {
                         .setScreenSharing(false)
                         .setOverflowMenu(true)
                         .setChat(false)
+                        .setRecording(true)
                         .setEnableRoomName(false);
 
                 QiscusMeet.call()
