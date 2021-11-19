@@ -24,4 +24,7 @@
     <color name="dateBackground">#E0E0E0</color>
     <color name="qiscus_white_grey">#FAFAFA</color>
 
+    <color name="qiscus_call_start">#00C47D</color>
+    <color name="qiscus_call_end">#FF3B30</color>
+
 </resources>
