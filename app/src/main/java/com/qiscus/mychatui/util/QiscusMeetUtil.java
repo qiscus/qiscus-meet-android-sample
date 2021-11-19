@@ -23,7 +23,17 @@ public class QiscusMeetUtil {
             JSONObject extras = event.getQiscusComment().getExtras();
             String callAction = extras.getString(CallType.CALL_ACTION);
 
-            launchCallingScreen(context, event.getQiscusComment(), callAction);
+            switch (callAction){
+                case QiscusMeetUtil.CallType.CALL_ACCEPTED:
+                    QiscusMeetUtil.startCall(context, event.getQiscusComment());
+                    break;
+                case QiscusMeetUtil.CallType.CALL_ENDED:
+                    QiscusMeet.endCall();
+                    break;
+                default:
+                    launchCallingScreen(context, event.getQiscusComment(), callAction);
+                    break;
+            }
         } catch (JSONException e) {
             Log.e(ChatRoomActivity.class.getName(), "onReceiveComment: ", e);
         }
@@ -36,7 +46,6 @@ public class QiscusMeetUtil {
     public static void startCall(Context context, QiscusComment comment) {
         try {
             JSONObject payload = new JSONObject(comment.getExtraPayload());
-            JSONObject content = payload.getJSONObject("content");
             String type = payload.getString("type");
 
             if (CallType.CALL.equals(type)) {
