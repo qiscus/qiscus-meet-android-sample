@@ -71,17 +71,17 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
 
     private void handleAction() {
         binding.btnAcceptCall.setOnClickListener(v -> {
-            chatRoomPresenter.answerCall(false, comment);
+            chatRoomPresenter.answerCall(comment);
             finish();
         });
 
         binding.btnRejectCall.setOnClickListener(v -> {
-            chatRoomPresenter.rejectCall(false, comment);
+            chatRoomPresenter.rejectCall(comment);
             finish();
         });
 
         binding.btnHangUp.setOnClickListener(v->{
-            chatRoomPresenter.endCall(false, comment);
+            chatRoomPresenter.endCall(comment);
             finish();
         });
     }
