@@ -1,5 +1,6 @@
 package com.qiscus.mychatui;
 
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.multidex.MultiDexApplication;
@@ -9,6 +10,7 @@ import com.qiscus.meet.MeetParticipantJoinedEvent;
 import com.qiscus.meet.MeetParticipantLeftEvent;
 import com.qiscus.meet.MeetTerminatedConfEvent;
 import com.qiscus.meet.QiscusMeet;
+import com.qiscus.mychatui.ui.HomeActivity;
 import com.qiscus.mychatui.util.PushNotificationUtil;
 import com.qiscus.mychatui.util.QiscusMeetUtil;
 import com.qiscus.nirmana.Nirmana;
@@ -72,6 +74,9 @@ public class MyApplication extends MultiDexApplication {
     @Subscribe
     public void onTerminatedConf(MeetTerminatedConfEvent event) {
         Log.e(getClass().getName(), "onTerminatedConf: " + event.getData());
+        Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+        homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        startActivity(homeIntent);
     }
 
     @Subscribe
