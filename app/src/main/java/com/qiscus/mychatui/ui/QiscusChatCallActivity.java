@@ -17,6 +17,12 @@ import com.qiscus.mychatui.util.QiscusMeetUtil;
 import com.qiscus.sdk.chat.core.QiscusCore;
 import com.qiscus.sdk.chat.core.data.model.QiscusChatRoom;
 import com.qiscus.sdk.chat.core.data.model.QiscusComment;
+import com.qiscus.sdk.chat.core.event.QiscusCommentReceivedEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoomPresenter.View {
 
@@ -54,6 +60,16 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
         }
         binding.tvIncomingMessage.setText(callMessage);
         setIncomingCall(comment.isMyComment());
+
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     public void setIncomingCall(boolean isMyComment){
@@ -72,17 +88,14 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
     private void handleAction() {
         binding.btnAcceptCall.setOnClickListener(v -> {
             chatRoomPresenter.answerCall(comment);
-            finish();
         });
 
         binding.btnRejectCall.setOnClickListener(v -> {
             chatRoomPresenter.rejectCall(comment);
-            finish();
         });
 
         binding.btnHangUp.setOnClickListener(v->{
             chatRoomPresenter.endCall(comment);
-            finish();
         });
     }
 
@@ -96,16 +109,28 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
         chatRoom = QiscusCore.getDataStore().getChatRoom(comment.getRoomId());
 
         chatRoomPresenter = new ChatRoomPresenter(this, chatRoom);
+    }
 
-        switch (intent.getAction()){
-            case QiscusMeetUtil.CallType.CALL_ACCEPTED:
-                finish();
-                QiscusMeetUtil.startCall(this, comment);
-                break;
-            case QiscusMeetUtil.CallType.CALL_ENDED:
-                finish();
-                QiscusMeet.endCall();
-                break;
+    @Subscribe
+    public void onReceiveComment(QiscusCommentReceivedEvent event) {
+        Log.e(getClass().getName(), "onReceiveComment() called with: event = [" + event.getQiscusComment() + "]");
+        try {
+            QiscusComment comment = event.getQiscusComment();
+            JSONObject extras = comment.getExtras();
+            String callAction = extras.getString(QiscusMeetUtil.CallType.CALL_ACTION);
+
+            switch (callAction){
+                case QiscusMeetUtil.CallType.CALL_ACCEPTED:
+                    QiscusMeetUtil.startCall(this, comment);
+                    break;
+                case QiscusMeetUtil.CallType.CALL_ENDED:
+                    QiscusMeet.endCall();
+                    break;
+            }
+        } catch (JSONException e) {
+            Log.e(getClass().getName(), "onReceiveComment: ", e);
+        } finally {
+            finish();
         }
     }
 

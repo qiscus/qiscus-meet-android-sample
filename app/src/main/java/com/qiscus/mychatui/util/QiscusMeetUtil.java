@@ -23,7 +23,11 @@ public class QiscusMeetUtil {
             JSONObject extras = event.getQiscusComment().getExtras();
             String callAction = extras.getString(CallType.CALL_ACTION);
 
-            launchCallingScreen(context, event.getQiscusComment(), callAction);
+            if (CallType.CALLING.equals(callAction)) launchCallingScreen(
+                    context, 
+                    event.getQiscusComment(), 
+                    callAction
+            );
         } catch (JSONException e) {
             Log.e(ChatRoomActivity.class.getName(), "onReceiveComment: ", e);
         }
