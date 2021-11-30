@@ -113,7 +113,6 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
 
     @Subscribe
     public void onReceiveComment(QiscusCommentReceivedEvent event) {
-        Log.e(getClass().getName(), "onReceiveComment() called with: event = [" + event.getQiscusComment() + "]");
         try {
             QiscusComment comment = event.getQiscusComment();
             JSONObject extras = comment.getExtras();
@@ -121,10 +120,8 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
 
             switch (callAction){
                 case QiscusMeetUtil.CallType.CALL_ACCEPTED:
-                    QiscusMeetUtil.startCall(this, comment);
-                    break;
                 case QiscusMeetUtil.CallType.CALL_ENDED:
-                    QiscusMeet.endCall();
+                    finish();
                     break;
             }
         } catch (JSONException e) {
