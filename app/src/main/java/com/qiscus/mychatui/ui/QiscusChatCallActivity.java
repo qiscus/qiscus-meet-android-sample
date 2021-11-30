@@ -7,13 +7,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.qiscus.meet.QiscusMeet;
 import com.qiscus.mychatui.databinding.ActivityQiscusChatCallBinding;
 import com.qiscus.mychatui.presenter.ChatRoomPresenter;
 import com.qiscus.mychatui.util.QiscusMeetUtil;
+import com.qiscus.mychatui.util.UnitCountDown;
 import com.qiscus.sdk.chat.core.QiscusCore;
 import com.qiscus.sdk.chat.core.data.model.QiscusChatRoom;
 import com.qiscus.sdk.chat.core.data.model.QiscusComment;
@@ -24,12 +25,15 @@ import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.TimeUnit;
+
 public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoomPresenter.View {
 
     private static final String CHAT_COMMENT = "extra_chat_comment";
     private QiscusComment comment;
     private QiscusChatRoom chatRoom;
     private ChatRoomPresenter chatRoomPresenter;
+    private UnitCountDown timer;
 
     public static Intent generateIntent(Context context, QiscusComment comment, String action) {
         Intent intent = new Intent(context, QiscusChatCallActivity.class);
@@ -109,6 +113,23 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
         chatRoom = QiscusCore.getDataStore().getChatRoom(comment.getRoomId());
 
         chatRoomPresenter = new ChatRoomPresenter(this, chatRoom);
+
+        timer = new UnitCountDown(10L, TimeUnit.SECONDS, 1) {
+            @Override
+            public void onUnitTick(long secondsUntilFinished, @NonNull TimeUnit unit) {
+                Log.e(getClass().getName(), "onUnitTick() called with: secondsUntilFinished = [" + secondsUntilFinished + "], unit = [" + unit + "]");
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (comment.isMyComment()) chatRoomPresenter.endCall(comment);
+            }
+        };
+
+        if (QiscusMeetUtil.CallType.CALLING.equals(intent.getAction())){
+            if (comment.isMyComment()) timer.start();
+        }
     }
 
     @Subscribe
@@ -121,6 +142,7 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
             switch (callAction){
                 case QiscusMeetUtil.CallType.CALL_ACCEPTED:
                 case QiscusMeetUtil.CallType.CALL_ENDED:
+                    timer.cancel();
                     finish();
                     break;
             }
