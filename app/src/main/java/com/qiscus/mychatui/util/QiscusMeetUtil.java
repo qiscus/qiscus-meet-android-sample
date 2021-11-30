@@ -18,16 +18,22 @@ public class QiscusMeetUtil {
 
     private static final String TAG = "QiscusMeetUtil";
 
-    public static void handleReceivedMessageUtil(Context context, QiscusCommentReceivedEvent event) {
+    public static void handleReceivedMessageUtil(Context context, QiscusComment comment) {
         try {
-            JSONObject extras = event.getQiscusComment().getExtras();
+            JSONObject extras = comment.getExtras();
             String callAction = extras.getString(CallType.CALL_ACTION);
 
-            if (CallType.CALLING.equals(callAction)) launchCallingScreen(
-                    context, 
-                    event.getQiscusComment(), 
-                    callAction
-            );
+            switch (callAction) {
+                case CallType.CALLING:
+                    launchCallingScreen(context, comment, callAction);
+                    break;
+                case QiscusMeetUtil.CallType.CALL_ACCEPTED:
+                    QiscusMeetUtil.startCall(context, comment);
+                    break;
+                case QiscusMeetUtil.CallType.CALL_ENDED:
+                    QiscusMeet.endCall();
+                    break;
+            }
         } catch (JSONException e) {
             Log.e(ChatRoomActivity.class.getName(), "onReceiveComment: ", e);
         }
@@ -53,6 +59,8 @@ public class QiscusMeetUtil {
                         .setOverflowMenu(true)
                         .setChat(false)
                         .setRecording(true)
+                        .setParticipantMenu(false)
+                        .setTileView(false)
                         .setEnableRoomName(false);
 
                 QiscusMeet.call()
