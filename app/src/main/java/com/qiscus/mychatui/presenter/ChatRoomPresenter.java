@@ -180,7 +180,7 @@ public class ChatRoomPresenter extends QiscusPresenter<ChatRoomPresenter.View> i
 
     public void endCall(QiscusComment comment) {
         Map<String, Object> map = new HashMap<>();
-        QiscusComment qiscusComment = QiscusComment.generateCustomMessage(comment.getRoomId(), "Call Ended", QiscusMeetUtil.CallType.CALL, new JSONObject(map));
+        QiscusComment qiscusComment = QiscusComment.generateCustomMessage(comment.getRoomId(), "Call Canceled", QiscusMeetUtil.CallType.CALL, new JSONObject(map));
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put(QiscusMeetUtil.CallType.CALL_ACTION, QiscusMeetUtil.CallType.CALL_ENDED);
