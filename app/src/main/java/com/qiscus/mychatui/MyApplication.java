@@ -68,7 +68,7 @@ public class MyApplication extends MultiDexApplication {
     @Subscribe
     public void onReceiveComment(QiscusCommentReceivedEvent event) {
         Log.e(getClass().getName(), "onReceiveComment() called with: event = [" + event.getQiscusComment() + "]");
-        QiscusMeetUtil.handleReceivedMessageUtil(this, event);
+        QiscusMeetUtil.handleReceivedMessageUtil(this, event.getQiscusComment());
     }
 
     @Subscribe
