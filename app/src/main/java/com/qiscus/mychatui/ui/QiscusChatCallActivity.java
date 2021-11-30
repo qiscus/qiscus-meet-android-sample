@@ -123,7 +123,7 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
             @Override
             public void onFinish() {
                 super.onFinish();
-                if (comment.isMyComment()) chatRoomPresenter.endCall(comment);
+                if (comment.isMyComment()) chatRoomPresenter.endCall(comment, "Outgoing Call");
             }
         };
 
