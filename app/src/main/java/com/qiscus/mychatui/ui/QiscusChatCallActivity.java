@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.qiscus.meet.MeetTerminatedConfEvent;
+import com.qiscus.meet.QiscusMeet;
 import com.qiscus.mychatui.databinding.ActivityQiscusChatCallBinding;
 import com.qiscus.mychatui.presenter.ChatRoomPresenter;
 import com.qiscus.mychatui.util.QiscusMeetUtil;
@@ -143,16 +145,23 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
 
             switch (callAction){
                 case QiscusMeetUtil.CallType.CALL_ACCEPTED:
+                    QiscusMeetUtil.startCall(QiscusChatCallActivity.this, comment);
+                    break;
                 case QiscusMeetUtil.CallType.CALL_ENDED:
-                    timer.cancel();
+                    QiscusMeet.endCall();
                     finish();
                     break;
             }
         } catch (JSONException e) {
             Timber.e(e,"onReceiveComment: ");
         } finally {
-            finish();
+            timer.cancel();
         }
+    }
+
+    @Subscribe
+    public void onTerminatedConf(MeetTerminatedConfEvent event) {
+        finish();
     }
 
     @Override
