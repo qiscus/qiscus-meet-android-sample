@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
  * - Gitlab https://gitlab.com/pengdst
  * - LinkedIn https://linkedin.com/in/pengdst
  */
-abstract class UnitCountDown(timer: Long, unit: TimeUnit, interval: Long = 1) : CountDownTimer(
+abstract class UnitCountDownTimer(timer: Long, unit: TimeUnit, interval: Long = 1) : CountDownTimer(
     TimeUnit.MILLISECONDS.convert(timer, unit),
     TimeUnit.MILLISECONDS.convert(interval, unit)
 ) {

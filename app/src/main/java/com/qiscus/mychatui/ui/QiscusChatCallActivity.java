@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 import com.qiscus.mychatui.databinding.ActivityQiscusChatCallBinding;
 import com.qiscus.mychatui.presenter.ChatRoomPresenter;
 import com.qiscus.mychatui.util.QiscusMeetUtil;
-import com.qiscus.mychatui.util.UnitCountDown;
+import com.qiscus.mychatui.util.UnitCountDownTimer;
 import com.qiscus.sdk.chat.core.QiscusCore;
 import com.qiscus.sdk.chat.core.data.model.QiscusChatRoom;
 import com.qiscus.sdk.chat.core.data.model.QiscusComment;
@@ -33,7 +33,7 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
     private QiscusComment comment;
     private QiscusChatRoom chatRoom;
     private ChatRoomPresenter chatRoomPresenter;
-    private UnitCountDown timer;
+    private UnitCountDownTimer timer;
 
     public static Intent generateIntent(Context context, QiscusComment comment, String action) {
         Intent intent = new Intent(context, QiscusChatCallActivity.class);
@@ -114,7 +114,7 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
 
         chatRoomPresenter = new ChatRoomPresenter(this, chatRoom);
 
-        timer = new UnitCountDown(10L, TimeUnit.SECONDS, 1) {
+        timer = new UnitCountDownTimer(10L, TimeUnit.SECONDS, 1) {
             @Override
             public void onUnitTick(long secondsUntilFinished, @NonNull TimeUnit unit) {
                 Log.e(getClass().getName(), "onUnitTick() called with: secondsUntilFinished = [" + secondsUntilFinished + "], unit = [" + unit + "]");
