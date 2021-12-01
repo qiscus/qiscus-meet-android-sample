@@ -20,17 +20,7 @@ public class QiscusMeetUtil {
             JSONObject extras = comment.getExtras();
             String callAction = extras.getString(CallType.CALL_ACTION);
 
-            switch (callAction) {
-                case CallType.CALLING:
-                    launchCallingScreen(context, comment, callAction);
-                    break;
-                case QiscusMeetUtil.CallType.CALL_ACCEPTED:
-                    QiscusMeetUtil.startCall(context, comment);
-                    break;
-                case QiscusMeetUtil.CallType.CALL_ENDED:
-                    QiscusMeet.endCall();
-                    break;
-            }
+            if (CallType.CALLING.equals(callAction)) launchCallingScreen(context, comment, callAction);
         } catch (JSONException e) {
             Timber.e(e, "onReceiveComment: ");
         }
