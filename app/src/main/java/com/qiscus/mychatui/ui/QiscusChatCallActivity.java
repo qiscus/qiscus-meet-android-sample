@@ -27,6 +27,8 @@ import org.json.JSONObject;
 
 import java.util.concurrent.TimeUnit;
 
+import timber.log.Timber;
+
 public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoomPresenter.View {
 
     private static final String CHAT_COMMENT = "extra_chat_comment";
@@ -117,7 +119,7 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
         timer = new UnitCountDownTimer(10L, TimeUnit.SECONDS, 1) {
             @Override
             public void onUnitTick(long secondsUntilFinished, @NonNull TimeUnit unit) {
-                Log.e(getClass().getName(), "onUnitTick() called with: secondsUntilFinished = [" + secondsUntilFinished + "], unit = [" + unit + "]");
+                Timber.e( "onUnitTick() called with: secondsUntilFinished = [" + secondsUntilFinished + "], unit = [" + unit + "]");
             }
 
             @Override
@@ -147,7 +149,7 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
                     break;
             }
         } catch (JSONException e) {
-            Log.e(getClass().getName(), "onReceiveComment: ", e);
+            Timber.e(e,"onReceiveComment: ");
         } finally {
             finish();
         }
@@ -155,12 +157,12 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
 
     @Override
     public void dismissLoading() {
-        Log.e(getClass().getName(), "dismissLoading() called");
+        Timber.e( "dismissLoading() called");
     }
 
     @Override
     public void showLoading() {
-        Log.e(getClass().getName(), "showLoading() called");
+        Timber.e( "showLoading() called");
     }
 
     @Override
@@ -170,61 +172,61 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
 
     @Override
     public void onRoomChanged(QiscusChatRoom qiscusChatRoom) {
-        Log.e(getClass().getName(), "onRoomChanged() called with: qiscusChatRoom = [" + qiscusChatRoom + "]");
+        Timber.e( "onRoomChanged() called with: qiscusChatRoom = [" + qiscusChatRoom + "]");
     }
 
     @Override
     public void onSendingComment(QiscusComment qiscusComment) {
-        Log.e(getClass().getName(), "onSendingComment() called with: qiscusComment = [" + qiscusComment + "]");
+        Timber.e( "onSendingComment() called with: qiscusComment = [" + qiscusComment + "]");
     }
 
     @Override
     public void onSuccessSendComment(QiscusComment qiscusComment) {
-        Log.e(getClass().getName(), "onSuccessSendComment() called with: qiscusComment = [" + qiscusComment + "]");
+        Timber.e( "onSuccessSendComment() called with: qiscusComment = [" + qiscusComment + "]");
     }
 
     @Override
     public void onFailedSendComment(QiscusComment qiscusComment) {
-        Log.e(getClass().getName(), "onFailedSendComment() called with: qiscusComment = [" + qiscusComment + "]");
+        Timber.e("onFailedSendComment() called with: qiscusComment = [" + qiscusComment + "]");
     }
 
     @Override
     public void onNewComment(QiscusComment qiscusComment) {
-        Log.e(getClass().getName(), "onNewComment() called with: qiscusComment = [" + qiscusComment + "]");
+        Timber.e( "onNewComment() called with: qiscusComment = [" + qiscusComment + "]");
     }
 
     @Override
     public void onCommentDeleted(QiscusComment qiscusComment) {
-        Log.e(getClass().getName(), "onCommentDeleted() called with: qiscusComment = [" + qiscusComment + "]");
+        Timber.e( "onCommentDeleted() called with: qiscusComment = [" + qiscusComment + "]");
     }
 
     @Override
     public void refreshComment(QiscusComment qiscusComment) {
-        Log.e(getClass().getName(), "refreshComment() called with: qiscusComment = [" + qiscusComment + "]");
+        Timber.e( "refreshComment() called with: qiscusComment = [" + qiscusComment + "]");
     }
 
     @Override
     public void updateLastDeliveredComment(long lastDeliveredCommentId) {
-        Log.e(getClass().getName(), "updateLastDeliveredComment() called with: lastDeliveredCommentId = [" + lastDeliveredCommentId + "]");
+        Timber.e( "updateLastDeliveredComment() called with: lastDeliveredCommentId = [" + lastDeliveredCommentId + "]");
     }
 
     @Override
     public void updateLastReadComment(long lastReadCommentId) {
-        Log.e(getClass().getName(), "updateLastReadComment() called with: lastReadCommentId = [" + lastReadCommentId + "]");
+        Timber.e( "updateLastReadComment() called with: lastReadCommentId = [" + lastReadCommentId + "]");
     }
 
     @Override
     public void onRealtimeStatusChanged(boolean connected) {
-        Log.e(getClass().getName(), "onRealtimeStatusChanged() called with: connected = [" + connected + "]");
+        Timber.e( "onRealtimeStatusChanged() called with: connected = [" + connected + "]");
     }
 
     @Override
     public void clearCommentsBefore(long timestamp) {
-        Log.e(getClass().getName(), "clearCommentsBefore() called with: timestamp = [" + timestamp + "]");
+        Timber.e( "clearCommentsBefore() called with: timestamp = [" + timestamp + "]");
     }
 
     @Override
     public void onUserTyping(String user, boolean typing) {
-        Log.e(getClass().getName(), "onUserTyping() called with: user = [" + user + "], typing = [" + typing + "]");
+        Timber.e( "onUserTyping() called with: user = [" + user + "], typing = [" + typing + "]");
     }
 }

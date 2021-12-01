@@ -1,22 +1,19 @@
 package com.qiscus.mychatui.util;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.qiscus.meet.MeetJwtConfig;
 import com.qiscus.meet.QiscusMeet;
-import com.qiscus.mychatui.ui.ChatRoomActivity;
 import com.qiscus.mychatui.ui.QiscusChatCallActivity;
 import com.qiscus.sdk.chat.core.QiscusCore;
 import com.qiscus.sdk.chat.core.data.model.QiscusComment;
-import com.qiscus.sdk.chat.core.event.QiscusCommentReceivedEvent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class QiscusMeetUtil {
+import timber.log.Timber;
 
-    private static final String TAG = "QiscusMeetUtil";
+public class QiscusMeetUtil {
 
     public static void handleReceivedMessageUtil(Context context, QiscusComment comment) {
         try {
@@ -35,7 +32,7 @@ public class QiscusMeetUtil {
                     break;
             }
         } catch (JSONException e) {
-            Log.e(ChatRoomActivity.class.getName(), "onReceiveComment: ", e);
+            Timber.e(e, "onReceiveComment: ");
         }
     }
 
@@ -71,9 +68,9 @@ public class QiscusMeetUtil {
                         .setAvatar(!comment.isMyComment() ? QiscusCore.getQiscusAccount().getAvatar() : comment.getSenderAvatar())
                         .build(context);
             }
-            else Log.e(TAG, "startCall: type " + type + " is not "+ CallType.CALL);
+            else Timber.e( "startCall: type " + type + " is not "+ CallType.CALL);
         } catch (JSONException e) {
-            Log.e(QiscusMeetUtil.class.getName(), "onReceiveComment: ", e);
+            Timber.e(e, "onReceiveComment: ");
         }
     }
 
@@ -104,8 +101,9 @@ public class QiscusMeetUtil {
                         .setAvatar(!comment.isMyComment() ? QiscusCore.getQiscusAccount().getAvatar() : comment.getSenderAvatar())
                         .build(context);
             }
+            else Timber.e( "startCall: type " + type + " is not "+ CallType.CALL);
         } catch (JSONException e) {
-            Log.e(QiscusMeetUtil.class.getName(), "onReceiveComment: ", e);
+            Timber.e(e, "onReceiveComment: ");
         }
     }
 

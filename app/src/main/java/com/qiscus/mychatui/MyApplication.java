@@ -21,6 +21,9 @@ import com.vanniktech.emoji.one.EmojiOneProvider;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import timber.log.Timber;
+
 /**
  * Created on : January 30, 2018
  * Author     : zetbaitsu
@@ -50,6 +53,9 @@ public class MyApplication extends MultiDexApplication {
         QiscusCore.setup(this, BuildConfig.QISCUS_SDK_APP_ID);
         QiscusMeet.setup(this, "qiscus-lMNhoA0fw7CDAY8d", "https://meet.qiscus.com");
 
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -67,26 +73,22 @@ public class MyApplication extends MultiDexApplication {
 
     @Subscribe
     public void onReceiveComment(QiscusCommentReceivedEvent event) {
-        Log.e(getClass().getName(), "onReceiveComment() called with: event = [" + event.getQiscusComment() + "]");
         QiscusMeetUtil.handleReceivedMessageUtil(this, event.getQiscusComment());
     }
 
     @Subscribe
     public void onTerminatedConf(MeetTerminatedConfEvent event) {
-        Log.e(getClass().getName(), "onTerminatedConf: " + event.getData());
-        Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
-        homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-        startActivity(homeIntent);
+        Timber.e( "onTerminatedConf: %s", event.getData());
     }
 
     @Subscribe
     public void onParticipantLeft(MeetParticipantLeftEvent event) {
-        Log.e(getClass().getName(), "onParticipantLeft: "+ event.getData());
+        Timber.e( "onParticipantLeft: %s", event.getData());
         QiscusMeet.endCall();
     }
 
     @Subscribe
     public void onParticipantJoined(MeetParticipantJoinedEvent event) {
-        Log.e(getClass().getName(), "onParticipantJoined: "+ event.getData());
+        Timber.e( "onParticipantJoined: %s", event.getData());
     }
 }

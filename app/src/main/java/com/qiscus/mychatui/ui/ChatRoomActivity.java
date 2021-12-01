@@ -32,6 +32,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import rx.Observable;
+import timber.log.Timber;
 
 /**
  * Created on : January 30, 2018
@@ -172,12 +173,12 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomFragm
 
     @Override
     public void dismissLoading() {
-        Log.e(ChatRoomActivity.class.getName(), "dismissLoading() called");
+        Timber.e("dismissLoading() called");
     }
 
     @Override
     public void showLoading() {
-        Log.e(ChatRoomActivity.class.getName(), "showLoading() called");
+        Timber.e("showLoading() called");
     }
 
     @Override
@@ -187,47 +188,47 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomFragm
 
     @Override
     public void onRoomChanged(QiscusChatRoom qiscusChatRoom) {
-        Log.e(ChatRoomActivity.class.getName(), "onRoomChanged() called with: qiscusChatRoom = [" + qiscusChatRoom + "]");
+        Timber.e("onRoomChanged() called with: qiscusChatRoom = [" + qiscusChatRoom + "]");
     }
 
     @Override
     public void onSendingComment(QiscusComment qiscusComment) {
-        Log.e(ChatRoomActivity.class.getName(), "onSendingComment() called with: qiscusComment = [" + qiscusComment + "]");
+        Timber.e("onSendingComment() called with: qiscusComment = [" + qiscusComment + "]");
     }
 
     @Override
     public void onSuccessSendComment(QiscusComment qiscusComment) {
-        Log.e(ChatRoomActivity.class.getName(), "onSuccessSendComment() called with: qiscusComment = [" + qiscusComment + "]");
+        Timber.e("onSuccessSendComment() called with: qiscusComment = [" + qiscusComment + "]");
     }
 
     @Override
     public void onFailedSendComment(QiscusComment qiscusComment) {
-        Log.e(ChatRoomActivity.class.getName(), "onFailedSendComment() called with: qiscusComment = [" + qiscusComment + "]");
+        Timber.e("onFailedSendComment() called with: qiscusComment = [" + qiscusComment + "]");
     }
 
     @Override
     public void onNewComment(QiscusComment qiscusComment) {
-        Log.e(ChatRoomActivity.class.getName(), "onNewComment() called with: qiscusComment = [" + qiscusComment + "]");
+        Timber.e("onNewComment() called with: qiscusComment = [" + qiscusComment + "]");
     }
 
     @Override
     public void onCommentDeleted(QiscusComment qiscusComment) {
-        Log.e(ChatRoomActivity.class.getName(), "onCommentDeleted() called with: qiscusComment = [" + qiscusComment + "]");
+        Timber.e("onCommentDeleted() called with: qiscusComment = [" + qiscusComment + "]");
     }
 
     @Override
     public void refreshComment(QiscusComment qiscusComment) {
-        Log.e(ChatRoomActivity.class.getName(), "refreshComment() called with: qiscusComment = [" + qiscusComment + "]");
+        Timber.e("refreshComment() called with: qiscusComment = [" + qiscusComment + "]");
     }
 
     @Override
     public void updateLastDeliveredComment(long lastDeliveredCommentId) {
-        Log.e(ChatRoomActivity.class.getName(), "updateLastDeliveredComment() called with: lastDeliveredCommentId = [" + lastDeliveredCommentId + "]");
+        Timber.e("updateLastDeliveredComment() called with: lastDeliveredCommentId = [" + lastDeliveredCommentId + "]");
     }
 
     @Override
     public void updateLastReadComment(long lastReadCommentId) {
-        Log.e(ChatRoomActivity.class.getName(), "updateLastReadComment() called with: lastReadCommentId = [" + lastReadCommentId + "]");
+        Timber.e("updateLastReadComment() called with: lastReadCommentId = [" + lastReadCommentId + "]");
     }
 
     @Override
