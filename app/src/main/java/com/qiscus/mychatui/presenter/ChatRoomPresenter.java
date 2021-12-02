@@ -106,10 +106,10 @@ public class ChatRoomPresenter extends QiscusPresenter<ChatRoomPresenter.View> {
 
     public void initiateCall() {
         Map<String, Object> map = new HashMap<>();
-        QiscusComment qiscusComment = QiscusComment.generateCustomMessage(room.getId(), "Calling", QiscusMeetUtil.CallType.CALL, new JSONObject(map));
+        QiscusComment qiscusComment = QiscusComment.generateCustomMessage(room.getId(), "Calling", "call", new JSONObject(map));
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(QiscusMeetUtil.CallType.CALL_ACTION, QiscusMeetUtil.CallType.CALLING);
+            jsonObject.put("status", "calling");
         } catch (JSONException e) {
             Timber.e(e, "Json Object error");
             e.printStackTrace();
@@ -120,10 +120,10 @@ public class ChatRoomPresenter extends QiscusPresenter<ChatRoomPresenter.View> {
 
     public void answerCall(QiscusComment comment) {
         Map<String, Object> map = new HashMap<>();
-        QiscusComment qiscusComment = QiscusComment.generateCustomMessage(comment.getRoomId(), "Call Accepted", QiscusMeetUtil.CallType.CALL, new JSONObject(map));
+        QiscusComment qiscusComment = QiscusComment.generateCustomMessage(comment.getRoomId(), "Call Accepted", "call", new JSONObject(map));
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(QiscusMeetUtil.CallType.CALL_ACTION, QiscusMeetUtil.CallType.CALL_ACCEPTED);
+            jsonObject.put("status", "answer");
         } catch (JSONException e) {
             Timber.e(e, "Json Object error");
             e.printStackTrace();
@@ -134,10 +134,10 @@ public class ChatRoomPresenter extends QiscusPresenter<ChatRoomPresenter.View> {
 
     public void rejectCall(QiscusComment comment) {
         Map<String, Object> map = new HashMap<>();
-        QiscusComment qiscusComment = QiscusComment.generateCustomMessage(comment.getRoomId(), "Call Rejected", QiscusMeetUtil.CallType.CALL, new JSONObject(map));
+        QiscusComment qiscusComment = QiscusComment.generateCustomMessage(comment.getRoomId(), "Call Rejected", "call", new JSONObject(map));
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(QiscusMeetUtil.CallType.CALL_ACTION, QiscusMeetUtil.CallType.CALL_ENDED);
+            jsonObject.put("status", "reject");
         } catch (JSONException e) {
             Timber.e(e, "Json Object error");
             e.printStackTrace();
@@ -152,10 +152,10 @@ public class ChatRoomPresenter extends QiscusPresenter<ChatRoomPresenter.View> {
 
     public void endCall(QiscusComment comment, String message) {
         Map<String, Object> map = new HashMap<>();
-        QiscusComment qiscusComment = QiscusComment.generateCustomMessage(comment.getRoomId(), message, QiscusMeetUtil.CallType.CALL, new JSONObject(map));
+        QiscusComment qiscusComment = QiscusComment.generateCustomMessage(comment.getRoomId(), message, "call", new JSONObject(map));
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(QiscusMeetUtil.CallType.CALL_ACTION, QiscusMeetUtil.CallType.CALL_ENDED);
+            jsonObject.put("status", "reject");
         } catch (JSONException e) {
             Timber.e(e, "Json Object error");
             e.printStackTrace();
