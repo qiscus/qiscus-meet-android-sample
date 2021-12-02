@@ -133,7 +133,7 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
             }
         };
 
-        if (QiscusMeetUtil.CallType.CALLING.equals(intent.getAction())){
+        if ("calling".equals(intent.getAction())){
             if (comment.isMyComment()) timer.start();
         }
     }
@@ -144,13 +144,29 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
         try {
             QiscusComment comment = event.getQiscusComment();
             JSONObject extras = comment.getExtras();
-            String callAction = extras.getString(QiscusMeetUtil.CallType.CALL_ACTION);
+            String callAction = extras.getString("status");
 
             switch (callAction){
-                case QiscusMeetUtil.CallType.CALL_ACCEPTED:
-                    QiscusMeetUtil.startCall(QiscusChatCallActivity.this, comment);
+                case "answer":
+                    try {
+                        JSONObject payload = new JSONObject(comment.getExtraPayload());
+                        String type = payload.getString("type");
+
+                        if ("call".equals(type)) {
+                            QiscusMeet.call()
+                                    .setTypeCall(QiscusMeet.Type.VOICE)
+                                    .setRoomId(comment.getRoomId()+"")
+                                    .setMuted(false)
+                                    .setDisplayName(!comment.isMyComment() ? QiscusCore.getQiscusAccount().getUsername() : comment.getSender())
+                                    .setAvatar(!comment.isMyComment() ? QiscusCore.getQiscusAccount().getAvatar() : comment.getSenderAvatar())
+                                    .build(this);
+                        }
+                        else Timber.e( "startCall: type " + type + " is not call");
+                    } catch (JSONException e) {
+                        Timber.e(e, "onReceiveComment: ");
+                    }
                     break;
-                case QiscusMeetUtil.CallType.CALL_ENDED:
+                case "reject":
                     QiscusMeet.endCall();
                     finish();
                     break;
