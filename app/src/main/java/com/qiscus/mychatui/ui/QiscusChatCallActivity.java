@@ -3,7 +3,6 @@ package com.qiscus.mychatui.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,7 +14,6 @@ import com.qiscus.meet.MeetTerminatedConfEvent;
 import com.qiscus.meet.QiscusMeet;
 import com.qiscus.mychatui.databinding.ActivityQiscusChatCallBinding;
 import com.qiscus.mychatui.presenter.ChatRoomPresenter;
-import com.qiscus.mychatui.util.QiscusMeetUtil;
 import com.qiscus.mychatui.util.UnitCountDownTimer;
 import com.qiscus.sdk.chat.core.QiscusCore;
 import com.qiscus.sdk.chat.core.data.model.QiscusChatRoom;
@@ -39,6 +37,7 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
     private ChatRoomPresenter chatRoomPresenter;
     private UnitCountDownTimer timer;
 
+    // Generate Intent to open QiscusChatCallActivity
     public static Intent generateIntent(Context context, QiscusComment comment, String action) {
         Intent intent = new Intent(context, QiscusChatCallActivity.class);
         intent.setAction(action);
@@ -93,6 +92,7 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
         handleIntent(intent);
     }
 
+    // Handle button accept, reject, and hang up action
     private void handleAction() {
         binding.btnAcceptCall.setOnClickListener(v -> {
             chatRoomPresenter.answerCall(comment);
@@ -107,6 +107,8 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
         });
     }
 
+    // 1. Get comment and chatroom from intent
+    // 2. Intantiate and start background timer
     private void handleIntent(Intent intent) {
         if (intent == null) {
             finish();
@@ -136,6 +138,7 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
         }
     }
 
+    // Handle call status answer and reject
     @Subscribe
     public void onReceiveComment(QiscusCommentReceivedEvent event) {
         try {
@@ -159,6 +162,7 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
         }
     }
 
+    // Finish/Close QiscusChatCallActivity onTerminatedConf
     @Subscribe
     public void onTerminatedConf(MeetTerminatedConfEvent event) {
         finish();
@@ -180,11 +184,6 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
     }
 
     @Override
-    public void onRoomChanged(QiscusChatRoom qiscusChatRoom) {
-        Timber.e( "onRoomChanged() called with: qiscusChatRoom = [" + qiscusChatRoom + "]");
-    }
-
-    @Override
     public void onSendingComment(QiscusComment qiscusComment) {
         Timber.e( "onSendingComment() called with: qiscusComment = [" + qiscusComment + "]");
     }
@@ -197,45 +196,5 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
     @Override
     public void onFailedSendComment(QiscusComment qiscusComment) {
         Timber.e("onFailedSendComment() called with: qiscusComment = [" + qiscusComment + "]");
-    }
-
-    @Override
-    public void onNewComment(QiscusComment qiscusComment) {
-        Timber.e( "onNewComment() called with: qiscusComment = [" + qiscusComment + "]");
-    }
-
-    @Override
-    public void onCommentDeleted(QiscusComment qiscusComment) {
-        Timber.e( "onCommentDeleted() called with: qiscusComment = [" + qiscusComment + "]");
-    }
-
-    @Override
-    public void refreshComment(QiscusComment qiscusComment) {
-        Timber.e( "refreshComment() called with: qiscusComment = [" + qiscusComment + "]");
-    }
-
-    @Override
-    public void updateLastDeliveredComment(long lastDeliveredCommentId) {
-        Timber.e( "updateLastDeliveredComment() called with: lastDeliveredCommentId = [" + lastDeliveredCommentId + "]");
-    }
-
-    @Override
-    public void updateLastReadComment(long lastReadCommentId) {
-        Timber.e( "updateLastReadComment() called with: lastReadCommentId = [" + lastReadCommentId + "]");
-    }
-
-    @Override
-    public void onRealtimeStatusChanged(boolean connected) {
-        Timber.e( "onRealtimeStatusChanged() called with: connected = [" + connected + "]");
-    }
-
-    @Override
-    public void clearCommentsBefore(long timestamp) {
-        Timber.e( "clearCommentsBefore() called with: timestamp = [" + timestamp + "]");
-    }
-
-    @Override
-    public void onUserTyping(String user, boolean typing) {
-        Timber.e( "onUserTyping() called with: user = [" + user + "], typing = [" + typing + "]");
     }
 }
