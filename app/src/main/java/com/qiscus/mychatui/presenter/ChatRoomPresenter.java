@@ -95,7 +95,7 @@ public class ChatRoomPresenter extends QiscusPresenter<ChatRoomPresenter.View> {
                         view.onSuccessSendComment(commentSend);
                     }
                 }, throwable -> {
-                    Log.e(ChatRoomPresenter.class.getName(), "sendComment: ", throwable);
+                    Timber.e(throwable, "sendComment: ");
                     if (qiscusComment.getRoomId() == room.getId()) {
                         view.onFailedSendComment(qiscusComment);
                     }
@@ -111,7 +111,7 @@ public class ChatRoomPresenter extends QiscusPresenter<ChatRoomPresenter.View> {
         try {
             jsonObject.put(QiscusMeetUtil.CallType.CALL_ACTION, QiscusMeetUtil.CallType.CALLING);
         } catch (JSONException e) {
-            Log.e("ChatRoomPresenter", "Json Object error", e);
+            Timber.e(e, "Json Object error");
             e.printStackTrace();
         }
         qiscusComment.setExtras(jsonObject);
@@ -125,7 +125,7 @@ public class ChatRoomPresenter extends QiscusPresenter<ChatRoomPresenter.View> {
         try {
             jsonObject.put(QiscusMeetUtil.CallType.CALL_ACTION, QiscusMeetUtil.CallType.CALL_ACCEPTED);
         } catch (JSONException e) {
-            Log.e("ChatRoomPresenter", "Json Object error", e);
+            Timber.e(e, "Json Object error");
             e.printStackTrace();
         }
         qiscusComment.setExtras(jsonObject);
@@ -139,7 +139,7 @@ public class ChatRoomPresenter extends QiscusPresenter<ChatRoomPresenter.View> {
         try {
             jsonObject.put(QiscusMeetUtil.CallType.CALL_ACTION, QiscusMeetUtil.CallType.CALL_ENDED);
         } catch (JSONException e) {
-            Log.e("ChatRoomPresenter", "Json Object error", e);
+            Timber.e(e, "Json Object error");
             e.printStackTrace();
         }
         qiscusComment.setExtras(jsonObject);
@@ -157,7 +157,7 @@ public class ChatRoomPresenter extends QiscusPresenter<ChatRoomPresenter.View> {
         try {
             jsonObject.put(QiscusMeetUtil.CallType.CALL_ACTION, QiscusMeetUtil.CallType.CALL_ENDED);
         } catch (JSONException e) {
-            Log.e("ChatRoomPresenter", "Json Object error", e);
+            Timber.e(e, "Json Object error");
             e.printStackTrace();
         }
         qiscusComment.setExtras(jsonObject);
