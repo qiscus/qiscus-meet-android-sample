@@ -52,11 +52,11 @@ public class MyApplication extends MultiDexApplication {
 
         Nirmana.init(this);
         QiscusCore.setup(this, BuildConfig.QISCUS_SDK_APP_ID);
+
+        // Setup QiscusMeet
         QiscusMeet.setup(this, "qiscus-lMNhoA0fw7CDAY8d", "https://meet.qiscus.com");
 
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-        }
+        // Register EventBus
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -101,7 +101,7 @@ public class MyApplication extends MultiDexApplication {
 
     @Subscribe
     public void onParticipantLeft(MeetParticipantLeftEvent event) {
-        Timber.e( "onParticipantLeft: %s", event.getData());
+        // end call on Participant Left Conference
         QiscusMeet.endCall();
     }
 
