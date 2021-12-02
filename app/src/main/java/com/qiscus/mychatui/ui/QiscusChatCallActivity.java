@@ -186,12 +186,16 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
 
     @Override
     public void dismissLoading() {
-        Timber.e( "dismissLoading() called");
+        binding.btnHangUp.setEnabled(true);
+        binding.btnAcceptCall.setEnabled(true);
+        binding.btnRejectCall.setEnabled(true);
     }
 
     @Override
     public void showLoading() {
-        Timber.e( "showLoading() called");
+        binding.btnHangUp.setEnabled(false);
+        binding.btnAcceptCall.setEnabled(false);
+        binding.btnRejectCall.setEnabled(false);
     }
 
     @Override
@@ -202,15 +206,18 @@ public class QiscusChatCallActivity extends AppCompatActivity implements ChatRoo
     @Override
     public void onSendingComment(QiscusComment qiscusComment) {
         Timber.e( "onSendingComment() called with: qiscusComment = [" + qiscusComment + "]");
+        showLoading();
     }
 
     @Override
     public void onSuccessSendComment(QiscusComment qiscusComment) {
         Timber.e( "onSuccessSendComment() called with: qiscusComment = [" + qiscusComment + "]");
+        dismissLoading();
     }
 
     @Override
     public void onFailedSendComment(QiscusComment qiscusComment) {
         Timber.e("onFailedSendComment() called with: qiscusComment = [" + qiscusComment + "]");
+        dismissLoading();
     }
 }
