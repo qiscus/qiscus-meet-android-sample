@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.multidex.MultiDexApplication;
 
 import com.qiscus.jupuk.Jupuk;
+import com.qiscus.meet.MeetJwtConfig;
 import com.qiscus.meet.MeetParticipantJoinedEvent;
 import com.qiscus.meet.MeetParticipantLeftEvent;
 import com.qiscus.meet.MeetTerminatedConfEvent;
@@ -59,6 +60,23 @@ public class MyApplication extends MultiDexApplication {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+
+        // Setup QiscusMeet config
+        MeetJwtConfig jwtConfig = new MeetJwtConfig()
+                .setEmail(QiscusCore.getQiscusAccount().getEmail());
+        jwtConfig.build();
+
+        QiscusMeet.config().setJwtConfig(jwtConfig)
+                .setAutoRecording(false)
+                .setScreenSharing(false)
+                .setOverflowMenu(true)
+                .setChat(false)
+                .setRecording(true)
+                .setParticipantMenu(false)
+                .setTileView(false)
+                .setEnableRoomName(false);
+
+        // Setup QiscusChat config
         QiscusCore.getChatConfig()
                 .enableDebugMode(true)
                 .setNotificationListener(PushNotificationUtil::showNotification)
