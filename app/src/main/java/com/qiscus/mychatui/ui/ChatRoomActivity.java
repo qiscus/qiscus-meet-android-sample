@@ -3,9 +3,7 @@ package com.qiscus.mychatui.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -187,11 +185,6 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomFragm
     }
 
     @Override
-    public void onRoomChanged(QiscusChatRoom qiscusChatRoom) {
-        Timber.e("onRoomChanged() called with: qiscusChatRoom = [" + qiscusChatRoom + "]");
-    }
-
-    @Override
     public void onSendingComment(QiscusComment qiscusComment) {
         Timber.e("onSendingComment() called with: qiscusComment = [" + qiscusComment + "]");
     }
@@ -204,41 +197,6 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomFragm
     @Override
     public void onFailedSendComment(QiscusComment qiscusComment) {
         Timber.e("onFailedSendComment() called with: qiscusComment = [" + qiscusComment + "]");
-    }
-
-    @Override
-    public void onNewComment(QiscusComment qiscusComment) {
-        Timber.e("onNewComment() called with: qiscusComment = [" + qiscusComment + "]");
-    }
-
-    @Override
-    public void onCommentDeleted(QiscusComment qiscusComment) {
-        Timber.e("onCommentDeleted() called with: qiscusComment = [" + qiscusComment + "]");
-    }
-
-    @Override
-    public void refreshComment(QiscusComment qiscusComment) {
-        Timber.e("refreshComment() called with: qiscusComment = [" + qiscusComment + "]");
-    }
-
-    @Override
-    public void updateLastDeliveredComment(long lastDeliveredCommentId) {
-        Timber.e("updateLastDeliveredComment() called with: lastDeliveredCommentId = [" + lastDeliveredCommentId + "]");
-    }
-
-    @Override
-    public void updateLastReadComment(long lastReadCommentId) {
-        Timber.e("updateLastReadComment() called with: lastReadCommentId = [" + lastReadCommentId + "]");
-    }
-
-    @Override
-    public void onRealtimeStatusChanged(boolean connected) {
-        Log.d(ChatRoomActivity.class.getName(), "onRealtimeStatusChanged() called with: connected = [" + connected + "]");
-    }
-
-    @Override
-    public void clearCommentsBefore(long timestamp) {
-        Log.d(ChatRoomActivity.class.getName(), "clearCommentsBefore() called with: timestamp = [" + timestamp + "]");
     }
 
     @Override
