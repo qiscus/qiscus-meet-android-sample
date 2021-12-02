@@ -36,20 +36,6 @@ public class QiscusMeetUtil {
             String type = payload.getString("type");
 
             if (CallType.CALL.equals(type)) {
-                MeetJwtConfig jwtConfig = new MeetJwtConfig();
-                jwtConfig.setEmail(QiscusCore.getQiscusAccount().getEmail());
-                jwtConfig.build();
-
-                QiscusMeet.config().setJwtConfig(jwtConfig)
-                        .setAutoRecording(false)
-                        .setScreenSharing(false)
-                        .setOverflowMenu(true)
-                        .setChat(false)
-                        .setRecording(true)
-                        .setParticipantMenu(false)
-                        .setTileView(false)
-                        .setEnableRoomName(false);
-
                 QiscusMeet.call()
                         .setTypeCall(QiscusMeet.Type.VOICE)
                         .setRoomId(comment.getUniqueId())
@@ -75,13 +61,6 @@ public class QiscusMeetUtil {
                 MeetJwtConfig jwtConfig = new MeetJwtConfig();
                 jwtConfig.setEmail(QiscusCore.getQiscusAccount().getEmail());
                 jwtConfig.build();
-
-                QiscusMeet.config().setJwtConfig(jwtConfig)
-                        .setAutoRecording(false)
-                        .setScreenSharing(true)
-                        .setOverflowMenu(true)
-                        .setChat(true)
-                        .setEnableRoomName(true);
 
                 QiscusMeet.answer()
                         .setTypeCall(isVideo ? QiscusMeet.Type.VIDEO : QiscusMeet.Type.VOICE)
