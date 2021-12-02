@@ -106,7 +106,7 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomFragm
             }
         });
         btnCall.setOnClickListener(v -> {
-            startMeet(false);
+            startMeet();
         });
 
         btn_action_copy.setOnClickListener(view -> getChatFragment().copyComment());
@@ -115,8 +115,8 @@ public class ChatRoomActivity extends AppCompatActivity implements ChatRoomFragm
         btn_action_reply_cancel.setOnClickListener(view -> getChatFragment().clearSelectedComment());
     }
 
-    private void startMeet(boolean isVideo) {
-        chatPresenter.initiateCall(isVideo);
+    private void startMeet() {
+        chatPresenter.initiateCall();
     }
 
     private void getOpponentIfNotGroupEmail() {

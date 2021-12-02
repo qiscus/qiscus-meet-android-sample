@@ -136,7 +136,7 @@ public class ChatRoomPresenter extends QiscusPresenter<ChatRoomPresenter.View> i
         pendingTask.put(qiscusComment, subscription);
     }
 
-    public void initiateCall(boolean isVideo) {
+    public void initiateCall() {
         Map<String, Object> map = new HashMap<>();
         QiscusComment qiscusComment = QiscusComment.generateCustomMessage(room.getId(), "Calling", QiscusMeetUtil.CallType.CALL, new JSONObject(map));
         JSONObject jsonObject = new JSONObject();
