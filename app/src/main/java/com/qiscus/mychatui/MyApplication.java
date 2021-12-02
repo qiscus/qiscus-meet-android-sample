@@ -1,7 +1,6 @@
 package com.qiscus.mychatui;
 
 import android.content.Intent;
-import android.util.Log;
 
 import androidx.multidex.MultiDexApplication;
 
@@ -11,17 +10,19 @@ import com.qiscus.meet.MeetParticipantJoinedEvent;
 import com.qiscus.meet.MeetParticipantLeftEvent;
 import com.qiscus.meet.MeetTerminatedConfEvent;
 import com.qiscus.meet.QiscusMeet;
-import com.qiscus.mychatui.ui.HomeActivity;
+import com.qiscus.mychatui.ui.QiscusChatCallActivity;
 import com.qiscus.mychatui.util.PushNotificationUtil;
-import com.qiscus.mychatui.util.QiscusMeetUtil;
 import com.qiscus.nirmana.Nirmana;
 import com.qiscus.sdk.chat.core.QiscusCore;
+import com.qiscus.sdk.chat.core.data.model.QiscusComment;
 import com.qiscus.sdk.chat.core.event.QiscusCommentReceivedEvent;
 import com.vanniktech.emoji.EmojiManager;
 import com.vanniktech.emoji.one.EmojiOneProvider;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import timber.log.Timber;
 
@@ -91,7 +92,18 @@ public class MyApplication extends MultiDexApplication {
 
     @Subscribe
     public void onReceiveComment(QiscusCommentReceivedEvent event) {
-        QiscusMeetUtil.handleReceivedMessageUtil(this, event.getQiscusComment());
+        try {
+            QiscusComment comment = event.getQiscusComment();
+            JSONObject extras = comment.getExtras();
+            String callAction = extras.getString("status");
+
+            if ("calling".equals(callAction)) {
+                Intent intent = QiscusChatCallActivity.generateIntent(this, comment, callAction);
+                startActivity(intent);
+            }
+        } catch (JSONException e) {
+            Timber.e(e, "onReceiveComment: ");
+        }
     }
 
     @Subscribe
